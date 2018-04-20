@@ -1,5 +1,7 @@
 #Krabby Patty Party
 #Mery,Lingxiao,Tszching
+#press left or right arrow key to move spongebob
+#catch the krabby patty to move on to the next level
 from gamelib import*#imports the game library of classes and functions
 game = Game (800,600,"Krabby patty party",30)#game object
 bk = Image("bk8.jpg",game)#image object
@@ -88,7 +90,6 @@ ptcount = 0
 game.over = False
 while not game.over:
     game.processInput()
-    game.setBackground(st)
     st.draw()
     bkm.play()
     if keys.Pressed[K_SPACE]:
@@ -99,11 +100,10 @@ while not game.over:
 game.over = False    
 while not game.over:#while loops runs until game is over
     game.processInput()#process Input
-    game.setBackground(bk)
     bk.draw()
     sb.draw()
     bkm.play()
-
+    game.drawText("LEVEL ONE",250,5)
     for index in range(30):
         kp[index].move()
         if kp[index].collidedWith(sb):
@@ -149,13 +149,12 @@ while not game.over:#while loops runs until game is over
         sb.x -= 8
 
     if game.score>=8:
-        game.drawText("Level Clear",250,5)
         game.over = True
      
         
-    if game.score<0:
-        game.drawText("YOU ARE FIRED",250,5)
+    if game.score<0 or game.time<1 :
         game.over = True
+        lose.draw()
         
     game.displayScore()
     game.displayTime(100,5)
@@ -164,12 +163,9 @@ while not game.over:#while loops runs until game is over
     game.update(30)
 
 #Level Clear
-
 game.over = False
 while not game.over and game.score>=8:
     game.processInput()
-
-    game.setBackground(bk1)
     bk1.draw()
     levelup.play()
 
@@ -180,17 +176,17 @@ while not game.over and game.score>=8:
 
 #lose
 game.over = False
-while not game.over and game.score<=0 or game.time<1 :
+while not game.over and game.score<0 or game.time<1 :
     game.processInput()
-
-    game.setBackground(lose)
     lose.draw()
    
 
     if keys.Pressed[K_SPACE]:
         game.over=True
-
+        game.quit()
+        
     game.update(30)
+    game.over=False
 #Level2
 kp = []
 for index in range(30):
@@ -251,14 +247,13 @@ for index in range(10):
     pt[index].resizeBy(-55)
     pt[index].moveTo(x, -y)
     pt[index].setSpeed(s,180)
-    
-game.over = False    
-while not game.over and game.score>=8 :#while loops runs until game is over
+#level2 game loop    
+#game.over = False    
+while not game.over and game.score>7:#while loops runs until game is over
     game.processInput()#process Input
-    game.setBackground(bk)
     bk.draw()
     sb.draw()
-
+    game.drawText("LEVEL TWO - Catch 4 more Krabby Patties to move on to next level",250,5)
     for index in range(30):
         kp[index].move()
         if kp[index].collidedWith(sb):
@@ -285,7 +280,6 @@ while not game.over and game.score>=8 :#while loops runs until game is over
         if seashell[index].isOffScreen("bottom") and seashell[index].visible:
             seashellPassed += 1
             seashell[index].visible = False           
-
 
     for index in range(10):
         clock[index].move()
@@ -314,10 +308,10 @@ while not game.over and game.score>=8 :#while loops runs until game is over
         game.over = True
      
         
-    if game.score<8:
-        game.over = True
+    '''if game.score<8:
+        game.over = True'''
 
-    if game.time<1:
+    if game.time<1 and game.score<12:
         game.over = True
         
     game.displayScore()
@@ -330,23 +324,20 @@ while not game.over and game.score>=8 :#while loops runs until game is over
 game.over = False
 while not game.over and game.score<=8 or game.time<1 :
     game.processInput()
-
-    game.setBackground(lose)
     lose.draw()
 
     if keys.Pressed[K_SPACE]:
         game.over=True
-
+        game.quit()
+        
     game.update(30)
 
 
 #Level Clear
 
 game.over = False
-while not game.over and game.score>=12:
+while not game.over and game.score>11:
     game.processInput()
-
-    game.setBackground(bk1)
     bk1.draw()
     levelup.play()
 
@@ -354,6 +345,8 @@ while not game.over and game.score>=12:
         game.over=True
 
     game.update(30)
+game.over=False
+
 #level3
 kp = []
 for index in range(30):
@@ -414,11 +407,10 @@ for index in range(15):
     pt[index].resizeBy(-55)
     pt[index].moveTo(x, -y)
     pt[index].setSpeed(s,180)
-    
-game.over = False    
+#level 3 game loop    
+#game.over = False    
 while not game.over and game.score>=12 :#while loops runs until game is over
     game.processInput()#process Input
-    game.setBackground(bk)
     bk.draw()
     sb.draw()
     game.drawText("CATCH 8 MORE KRABBY PATTY  TO PASS THIS LEVEL!!",100,20)
@@ -482,10 +474,10 @@ while not game.over and game.score>=12 :#while loops runs until game is over
         
     if game.score<12:
         game.over = True
-
+        lose.draw()
     if game.time<1:
         game.over = True
-        
+        lose.draw()        
     game.displayScore()
     game.displayTime(100,5)
 
@@ -496,8 +488,6 @@ while not game.over and game.score>=12 :#while loops runs until game is over
 game.over = False
 while not game.over and game.score<=12 or game.time<1 :
     game.processInput()
-
-    game.setBackground(lose)
     lose.draw()
 
     if keys.Pressed[K_SPACE]:
@@ -511,8 +501,6 @@ while not game.over and game.score<=12 or game.time<1 :
 game.over = False
 while not game.over and game.score>=20:
     game.processInput()
-
-    game.setBackground(final)
     final.draw()
     levelup.play()
 
