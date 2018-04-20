@@ -492,7 +492,7 @@ while not game.over and game.score<=12 or game.time<1 :
 
     if keys.Pressed[K_SPACE]:
         game.over=True
-
+        game.quit()
     game.update(30)
 
 
